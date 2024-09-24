@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- dev
+- test
 
 variables:
 - group: Fabric_Deployment_Group_S
