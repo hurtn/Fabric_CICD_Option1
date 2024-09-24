@@ -12,7 +12,6 @@ trigger:
 variables:
   branchName: $(Build.SourceBranchName)
 
-variables:
   ${{ if eq(variables['Build.SourceBranchName'], 'dev') }}:
     - group: Fabric_Deployment_Group_S_DEV
     - group: Fabric_Deployment_Group_NS_DEV
@@ -20,9 +19,7 @@ variables:
     - group: Fabric_Deployment_Group_S
     - group: Fabric_Deployment_Group_NS
 
-variables:
-- group: Fabric_Deployment_Group_S
-- group: Fabric_Deployment_Group_NS
+
 
 pool:
   name: Default
