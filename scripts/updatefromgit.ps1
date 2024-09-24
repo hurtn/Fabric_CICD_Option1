@@ -23,7 +23,8 @@ param(
 
 # End Parameters =======================================
 
-$global:baseUrl = "<Base URL>" # Replace with environment-specific base URL. For example: "https://api.fabric.microsoft.com/v1"
+
+$global:baseUrl = "https://api.fabric.microsoft.com/v1/" # Replace with environment-specific base URL. For example: "https://api.fabric.microsoft.com/v1"
 
 $global:resourceUrl = "https://api.fabric.microsoft.com"
 
