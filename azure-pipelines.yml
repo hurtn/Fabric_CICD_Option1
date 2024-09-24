@@ -6,7 +6,7 @@
 trigger:
   branches:
     include:
-      - 'test'
+      - 'test123'
 
 variables:
 - group: Fabric_Deployment_Group_S
@@ -49,4 +49,4 @@ stages:
             - task: PowerShell@2
               inputs:
                 targetType: 'inline'
-                script: '.\scripts\updatefromgit.ps1 -workspaceName $(testWorkspaceName)'
+                script: '.\scripts\updatefromgit.ps1 -workspaceName $(testWorkspaceName) -pFabricToken $(fabrictoken)'
