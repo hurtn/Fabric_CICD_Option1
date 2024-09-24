@@ -6,18 +6,11 @@
 trigger:
   branches:
     include:
-      - 'dev'
       - 'test'
 
 variables:
-  branchName: $(Build.SourceBranchName)
-
-  ${{ if eq($branchName], 'dev') }}:
-    - group: Fabric_Deployment_Group_S_DEV
-    - group: Fabric_Deployment_Group_NS_DEV
-  ${{ if ne($branchName, 'test') }}:
-    - group: Fabric_Deployment_Group_S
-    - group: Fabric_Deployment_Group_NS
+- group: Fabric_Deployment_Group_S
+- group: Fabric_Deployment_Group_NS
 
 
 
