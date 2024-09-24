@@ -1,0 +1,48 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- dev
+
+variables:
+- group: Fabric_Deployment_Variable_Group_S
+- group: Fabric_Deployment_Variable_Group_NS
+
+pool:
+  name: Default
+
+stages:
+- stage: Test
+  displayName: 'Deploy to Test'
+  jobs:
+    - deployment: 'DeployTest'
+      displayName: 'Deploy to Test'
+      environment: Test
+
+      # Just to raise awareness that you can select pools at different stages
+      # pool: 
+      #   vmImage: 'windows-latest'
+
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - checkout: self
+              path: 'self'
+          
+            - task: PowerShell@2
+              inputs:
+                targetType: 'inline'
+                script: |
+                  $SecureStringPwd = ConvertTo-SecureString $(azspsecret) -AsPlainText -Force
+                  Write-Host "Using client id '$(azclientid)'"
+                  $pscredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $(azclientid), $SecureStringPwd
+                  
+                  Connect-AzAccount -ServicePrincipal -Credential $pscredential -Tenant $(aztenantid)
+
+            - task: PowerShell@2
+              inputs:
+                targetType: 'inline'
+                script: '.\scripts\updatefromgit.ps1 -workspaceName $(testWorkspaceName)'
