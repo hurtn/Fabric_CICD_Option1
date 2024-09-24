@@ -49,12 +49,18 @@ function GetWorkspaceByName($workspaceName) {
     # Get workspaces    
     $getWorkspacesUrl = "{0}/workspaces" -f $global:baseUrl
     $workspaces = (Invoke-RestMethod -Headers $global:fabricHeaders -Uri $getWorkspacesUrl -Method GET).value
-
+    Write-Host "Finding workspace: '$workspaceName'."
     # Try to find the workspace by display name
     $workspace = $workspaces | Where-Object {$_.DisplayName -eq $workspaceName}
+    # Verify the existence of the requested deployment pipeline
+    if(!$workspace) {
+      Write-Host "A workspace with the requested name: '$workspace' was not found." -ForegroundColor Red
+      return
+    }
 
     return $workspace
 }
+
 
 function GetErrorResponse($exception) {
     # Relevant only for PowerShell Core
