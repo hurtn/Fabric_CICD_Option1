@@ -12,10 +12,10 @@ trigger:
 variables:
   branchName: $(Build.SourceBranchName)
 
-  ${{ if eq(variables['Build.SourceBranchName'], 'dev') }}:
+  ${{ if eq($branchName], 'dev') }}:
     - group: Fabric_Deployment_Group_S_DEV
     - group: Fabric_Deployment_Group_NS_DEV
-  ${{ if ne(variables['Build.SourceBranchName'], 'test') }}:
+  ${{ if ne($branchName, 'test') }}:
     - group: Fabric_Deployment_Group_S
     - group: Fabric_Deployment_Group_NS
 
