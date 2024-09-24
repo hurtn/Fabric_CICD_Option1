@@ -41,7 +41,7 @@ function SetFabricHeaders() {
 
     $global:fabricHeaders = @{
         'Content-Type' = "application/json"
-        'Authorization' = "Bearer {0}" -f $fabricToken
+        'Authorization' = "Bearer {0}" -f $pfabricToken
     }
 }
 
