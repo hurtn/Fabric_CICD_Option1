@@ -7,8 +7,8 @@ trigger:
 - dev
 
 variables:
-- group: Fabric_Deployment_Variable_Group_S
-- group: Fabric_Deployment_Variable_Group_NS
+- group: Fabric_Deployment_Group_S
+- group: Fabric_Deployment_Group_NS
 
 pool:
   name: Default
