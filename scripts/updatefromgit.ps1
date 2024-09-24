@@ -31,10 +31,16 @@ $global:fabricHeaders = @{}
 
 function SetFabricHeaders() {
 
+    # Login to Azure
+    #Connect-AzAccount | Out-Null
+
+    # Get authentication
+    $fabricToken = (Get-AzAccessToken -ResourceUrl $global:resourceUrl).Token
+
 
     $global:fabricHeaders = @{
         'Content-Type' = "application/json"
-        'Authorization' = "Bearer {0}" -f $pfabricToken
+        'Authorization' = "Bearer {0}" -f $fabricToken
     }
 }
 
