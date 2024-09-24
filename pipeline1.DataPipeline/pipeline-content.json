@@ -4,7 +4,7 @@
       {
         "type": "Wait",
         "typeProperties": {
-          "waitTimeInSeconds": 1
+          "waitTimeInSeconds": 2
         },
         "name": "Wait1",
         "dependsOn": []
