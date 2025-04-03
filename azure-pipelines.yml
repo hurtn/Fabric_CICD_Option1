@@ -16,13 +16,27 @@ stages:
 - stage: Test
   displayName: 'Deploy to Test'
   jobs:
-    - job: Deployment
+    - deployment: 'DeployTest'
       displayName: 'Deploy to Test'
+      environment: Test
+#      pool:
+#        name: Azure Pipelines#
+
+#      steps:
+#      - task: PowerShell@2
+#        inputs:
+#          targetType: 'filePath'
+#          filePath: 'scripts\updatefromgit.ps1 -workspaceName $(testWorkspaceName) -pFabricToken $(fabrictoken)'
+
+
       pool:
         name: Azure Pipelines
 
-      steps:
-      - task: PowerShell@2
-        inputs:
-          targetType: 'filePath'
-          filePath: 'scripts\updatefromgit.ps1 -workspaceName $(testWorkspaceName) -pFabricToken $(fabrictoken)'
+      strategy:
+        runOnce:
+          deploy:
+            steps:          
+            - task: PowerShell@2
+              inputs:
+                targetType: 'inline'
+                script: '.\scripts\updatefromgit.ps1 -workspaceName $(testWorkspaceName) -pFabricToken $(fabrictoken)'
