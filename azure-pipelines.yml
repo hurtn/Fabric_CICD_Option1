@@ -33,18 +33,6 @@ stages:
         runOnce:
           deploy:
             steps:
-            - checkout: self
-              path: 'self'
-          
-            - task: PowerShell@2
-              inputs:
-                targetType: 'inline'
-                script: |
-                  $SecureStringPwd = ConvertTo-SecureString $(azspsecret) -AsPlainText -Force
-                  Write-Host "Using client id '$(azclientid)'"
-                  $pscredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $(azclientid), $SecureStringPwd
-                  
-                  Connect-AzAccount -ServicePrincipal -Credential $pscredential -Tenant $(aztenantid)
 
             - task: PowerShell@2
               inputs:
