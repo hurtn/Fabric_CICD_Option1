@@ -12,8 +12,6 @@ variables:
 - group: Fabric_Deployment_Group_S
 - group: Fabric_Deployment_Group_NS
 
-
-
 pool:
   name: Azure Pipelines
 
@@ -24,17 +22,9 @@ stages:
     - deployment: 'DeployTest'
       displayName: 'Deploy to Test'
       environment: Test
+      steps:
 
-      # Just to raise awareness that you can select pools at different stages
-      # pool: 
-      #   vmImage: 'windows-latest'
-
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-
-            - task: PowerShell@2
-              inputs:
-                targetType: 'inline'
-                script: '.\scripts\updatefromgit.ps1 -workspaceName $(testWorkspaceName) -pFabricToken $(fabrictoken)'
+      - task: PowerShell@2
+        inputs:
+          targetType: 'filePath'
+          filePath: 'scripts\updatefromgit.ps1 -workspaceName $(testWorkspaceName) -pFabricToken $(fabrictoken)'
