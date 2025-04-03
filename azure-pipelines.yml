@@ -15,7 +15,7 @@ variables:
 
 
 pool:
-  name: Default
+  name: Azure Pipelines
 
 stages:
 - stage: Test
