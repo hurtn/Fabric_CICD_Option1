@@ -19,7 +19,7 @@ stages:
 - stage: Test
   displayName: 'Deploy to Test'
   jobs:
-    - deployment: 'DeployTest'
+    - job: Deployment
       displayName: 'Deploy to Test'
       environment: Test
       steps:
