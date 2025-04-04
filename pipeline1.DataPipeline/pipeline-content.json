@@ -43,6 +43,21 @@
         "externalReferences": {
           "connection": "8d656605-6748-4c03-a99b-329d44553a81"
         }
+      },
+      {
+        "name": "Wait2",
+        "type": "Wait",
+        "dependsOn": [
+          {
+            "activity": "Invoke pipeline1",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "typeProperties": {
+          "waitTimeInSeconds": 1
+        }
       }
     ],
     "parameters": {
