@@ -16,6 +16,10 @@
 # Parameters - fill these in before running the script!
 # =====================================================
 
+if(-not (Get-Module Az -ListAvailable)) { 
+    Install-Module Az -Scope CurrentUser -Force
+}
+
 param(
 [string]$workspaceName,
 [string]$pfabricToken
