@@ -79,6 +79,7 @@ function GetErrorResponse($exception) {
 }
 
 try {
+    Write-Host "Setting Fabric Header"
     SetFabricHeaders
 
     $workspace = GetWorkspaceByName $workspaceName 
