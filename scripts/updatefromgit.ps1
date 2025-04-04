@@ -32,10 +32,10 @@ $global:fabricHeaders = @{}
 
 function SetFabricHeaders() {
 
-    Write-Host "Connecting..."
+    #Write-Host "Connecting..."
 
     # Login to Azure
-    Connect-AzAccount | Out-Null
+    #Connect-AzAccount | Out-Null
     Write-Host "Getting Fabric Token"
 
     # Get authentication
