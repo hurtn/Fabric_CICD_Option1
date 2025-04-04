@@ -39,9 +39,6 @@ stages:
               inputs:
                 targetType: 'inline'
                 script: |
-                  # Register PSGallery repository if needed
-                  Register-PSRepository -Default
-
                   # Install Az module
                   Install-Module -Name Az -Force -Scope CurrentUser
 
