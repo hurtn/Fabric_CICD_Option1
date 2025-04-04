@@ -6,7 +6,7 @@
 trigger:
   branches:
     include:
-      - 'dev'
+      - 'test'
 
 variables:
 - group: Fabric_Deployment_Group_S
