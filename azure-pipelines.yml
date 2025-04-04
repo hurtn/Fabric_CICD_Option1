@@ -22,7 +22,10 @@ stages:
 #      pool:
 #        name: Azure Pipelines#
 
-#      steps:
+      steps:
+            - checkout: self
+              path: 'self'
+          
 #      - task: PowerShell@2
 #        inputs:
 #          targetType: 'filePath'
@@ -39,4 +42,4 @@ stages:
             - task: PowerShell@2
               inputs:
                 targetType: 'inline'
-                script: 'scripts\updatefromgit.ps1 -workspaceName $(testWorkspaceName) -pFabricToken $(fabrictoken)'
+                script: '.\scripts\updatefromgit.ps1 -workspaceName $(testWorkspaceName) -pFabricToken $(fabrictoken)'
