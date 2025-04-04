@@ -32,13 +32,16 @@ $global:fabricHeaders = @{}
 
 function SetFabricHeaders() {
 
+    Write-Host "Connecting..."
+
     # Login to Azure
-    #Connect-AzAccount | Out-Null
+    Connect-AzAccount | Out-Null
+    Write-Host "Getting Fabric Token"
 
     # Get authentication
     $fabricToken = (Get-AzAccessToken -ResourceUrl $global:resourceUrl).Token
 
-
+    Write-Host "Setting header"
     $global:fabricHeaders = @{
         'Content-Type' = "application/json"
         'Authorization' = "Bearer {0}" -f $pfabricToken
