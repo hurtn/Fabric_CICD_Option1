@@ -34,9 +34,20 @@ stages:
             steps:
             - checkout: self
               path: 'self'
-          
+
             - task: PowerShell@2
               inputs:
                 targetType: 'inline'
-                script: '.\scripts\updatefromgit.ps1 -workspaceName $(testWorkspaceName) -pFabricToken $(fabrictoken)'
+                script: |
+                  # Register PSGallery repository if needed
+                  Register-PSRepository -Default
+
+                  # Install Az module
+                  Install-Module -Name Az -Force -Scope CurrentUser
+
+                  # Import Az module
+                  Import-Module Az
+
+                  # Run your script
+                  .\scripts\updatefromgit.ps1 -workspaceName $(testWorkspaceName) -pFabricToken $(fabrictoken)
 
