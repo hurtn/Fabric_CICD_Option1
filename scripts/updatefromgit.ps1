@@ -39,7 +39,7 @@ function SetFabricHeaders() {
     Write-Host "Getting Fabric Token"
 
     # Get authentication
-    $fabricToken = (Get-AzAccessToken -ResourceUrl $global:resourceUrl).Token
+    #$fabricToken = (Get-AzAccessToken -ResourceUrl $global:resourceUrl).Token
 
     Write-Host "Setting header"
     $global:fabricHeaders = @{
