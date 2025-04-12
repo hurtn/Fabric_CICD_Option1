@@ -24,7 +24,7 @@ stages:
   jobs:
     - deployment: 'UpdateFromGit'
       displayName: 'Run Update'
-      environment: $env:branchName
+      environment: dev
       strategy:
         runOnce:
           deploy:
