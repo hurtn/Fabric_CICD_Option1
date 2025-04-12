@@ -39,6 +39,18 @@ stages:
               inputs:
                 targetType: 'inline'
                 script: |
+              
+                  if ($env:branchName -eq 'dev') {
+                      $workspace = '$(mainVariable)'
+                    } elseif ($env:branchName -eq 'test') {
+                      $workspace = '$(testVariable)'
+                    } elseif ($env:branchName -eq 'prod') {
+                      $variableToUse = '$(prodVariable)'
+                    } else {
+                      $workspace = 'UnknownBranch'
+                    }
+
+
                   # Install Az module
                   Install-Module -Name Az -Force -Scope CurrentUser
 
