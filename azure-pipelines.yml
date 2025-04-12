@@ -24,7 +24,7 @@ stages:
   jobs:
     - deployment: 'UpdateFromGit'
       displayName: 'Run Update'
-      environment: dev
+      environment: 'dev'
       strategy:
         runOnce:
           deploy:
@@ -43,7 +43,7 @@ stages:
                     } else {
                       $workspace = 'UnknownBranch'
                     }
-                  fi
+
 
                   # Install Az module
                   Install-Module -Name Az -Force -Scope CurrentUser
