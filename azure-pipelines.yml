@@ -33,16 +33,6 @@ stages:
               inputs:
                 targetType: 'inline'
                 script: |
-              
-                  if ($env:branchName -eq 'dev') {
-                      $(DeployToWorkspaceName) = '$(devWorkspaceName)'
-                    } elseif ($env:branchName -eq 'test') {
-                      $(DeployToWorkspaceName) = '$(tstWorkspaceName)'
-                    } elseif ($env:branchName -eq 'prod') {
-                      $(DeployToWorkspaceName) = '$(prdWorkspaceName)'
-                    } else {
-                      $workspace = 'UnknownBranch'
-                    }
 
 
                   # Install Az module
@@ -52,56 +42,5 @@ stages:
                   Import-Module Az
 
                   # Run your script
-                  .\scripts\updatefromgit.ps1 -workspaceName $(DeployToWorkspaceName) -pFabricToken $(fabrictoken)
+                  .\scripts\updatefromgit.ps1 -workspaceName $(devWorkspaceName) -pFabricToken $(fabrictoken)
 
-
-trigger:
-  branches:
-    include:
-      - 'dev'
-      - 'test'
-      - 'prod'
-
-variables:
-- group: Fabric_Deployment_Group_S
-- group: Fabric_Deployment_Group_NS
-
-pool:
-  name: Azure Pipelines
-
-stages:
-- stage: Test
-  displayName: 'Update From Git'
-  jobs:
-    - deployment: 'UpdateFromGit'
-      displayName: 'Run Update'
-      environment: 'Development'  # Set a default environment
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - script: |
-                if [ "$(Build.SourceBranchName)" == "dev" ]; then
-                  echo "##vso[task.setvariable variable=DeployToWorkspaceName]$(devWorkspaceName)"
-                elif [ "$(Build.SourceBranchName)" == "test" ]; then
-                  echo "##vso[task.setvariable variable=DeployToWorkspaceName]$(tstWorkspaceName)"
-                elif [ "$(Build.SourceBranchName)" == "prod" ]; then
-                  echo "##vso[task.setvariable variable=DeployToWorkspaceName]$(prdWorkspaceName)"
-                else
-                  echo "##vso[task.setvariable variable=DeployToWorkspaceName]UnknownBranch"
-                fi
-              displayName: 'Set Workspace Variable'
-
-            - task: PowerShell@2
-              inputs:
-                targetType: 'inline'
-                script: |
-                  # Install Az module
-                  Install-Module -Name Az -Force -Scope CurrentUser
-
-                  # Import Az module
-                  Import-Module Az
-
-                  # Run your script
-                  .\scripts\updatefromgit.ps1 -workspaceName $(DeployToWorkspaceName) -pFabricToken $(fabrictoken)
-              displayName: 'Run Update Script'
