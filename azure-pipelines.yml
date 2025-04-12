@@ -6,8 +6,10 @@
 trigger:
   branches:
     include:
+      - 'dev'
       - 'test'
-
+      - 'prod'
+      
 variables:
 - group: Fabric_Deployment_Group_S
 - group: Fabric_Deployment_Group_NS
@@ -18,34 +20,27 @@ pool:
 
 stages:
 - stage: Test
-  displayName: 'Deploy to Test'
+  displayName: 'Update From Git'
   jobs:
-    - deployment: 'DeployTest'
-      displayName: 'Deploy to Test'
-      environment: Test
-
-      # Just to raise awareness that you can select pools at different stages
-      # pool: 
-      #   vmImage: 'windows-latest'
-
+    - deployment: 'UpdateFromGit'
+      displayName: 'Run Update'
+      environment: $env:branchName
       strategy:
         runOnce:
           deploy:
             steps:
-            - checkout: self
-              path: 'self'
-
+              displayName:
             - task: PowerShell@2
               inputs:
                 targetType: 'inline'
                 script: |
               
                   if ($env:branchName -eq 'dev') {
-                      $workspace = '$(mainVariable)'
+                      $DeployToWorkspaceName = '$(devWorkspaceName)'
                     } elseif ($env:branchName -eq 'test') {
-                      $workspace = '$(testVariable)'
+                      $DeployToWorkspaceName = '$(tstWorkspaceName)'
                     } elseif ($env:branchName -eq 'prod') {
-                      $variableToUse = '$(prodVariable)'
+                      $DeployToWorkspaceName = '$(prdWorkspaceName)'
                     } else {
                       $workspace = 'UnknownBranch'
                     }
@@ -58,5 +53,5 @@ stages:
                   Import-Module Az
 
                   # Run your script
-                  .\scripts\updatefromgit.ps1 -workspaceName $(testWorkspaceName) -pFabricToken $(fabrictoken)
+                  .\scripts\updatefromgit.ps1 -workspaceName $(DeployToWorkspaceName) -pFabricToken $(fabrictoken)
 
