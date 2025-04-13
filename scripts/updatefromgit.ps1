@@ -108,8 +108,3 @@ $updateFromGitResponse = Invoke-WebRequest -Headers $global:fabricHeaders -Uri $
 $operationId = $updateFromGitResponse.Headers['x-ms-operation-id']
 $retryAfter = $updateFromGitResponse.Headers['Retry-After']
 Write-Host "Long Running Operation ID: '$operationId' has been scheduled for updating the workspace '$workspaceName' from Git with a retry-after time of '$retryAfter' seconds." -ForegroundColor Green
-
-#} catch {
-#    $errorResponse = GetErrorResponse($_.Exception)
-#    Write-Host "Failed to update the workspace '$workspaceName' from Git. Error reponse: $errorResponse" -ForegroundColor Red
-#}
