@@ -24,7 +24,13 @@ stages:
   jobs:
     - deployment: 'UpdateFromGit'
       displayName: 'Run Update'
-      environment: 'dev'
+      ${{if contains(variables['Build.SourceBranch'], 'dev')}}:
+        environment: 'dev'
+      ${{if contains(variables['Build.SourceBranch'], 'test')}}:
+        environment: 'test'
+      ${{if contains(variables['Build.SourceBranch'], 'prod')}}:
+        environment: 'prod'
+
       strategy:
         runOnce:
           deploy:
