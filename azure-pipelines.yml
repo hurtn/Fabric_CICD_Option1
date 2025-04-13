@@ -37,7 +37,8 @@ stages:
               inputs:
                 targetType: 'inline'
                 script: |
-
+                  Write-Host "Starting script execution..."
+                  Write-Host "Branch Name: $env:branchName"
                   if ($env:branchName -eq 'dev') {
                     $DeployToWorkspaceName = '$(devWorkspaceName)'
                   } elseif ($env:branchName -eq 'test') {
@@ -53,4 +54,5 @@ stages:
                   # Import Az module
                   Import-Module Az
                   # Run your script
+                  Write-Host "Running update script passing parameter workspaceName=$DeployToWorkspaceName"
                   .\scripts\updatefromgit.ps1 -workspaceName $DeployToWorkspaceName -pFabricToken $(fabrictoken)
