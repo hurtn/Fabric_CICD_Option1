@@ -38,12 +38,13 @@ stages:
                 targetType: 'inline'
                 script: |
                   Write-Host "Starting script execution..."
-                  Write-Host "Branch Name: $env:branchName"
-                  if ($env:branchName -eq 'dev') {
+                  $branchName = "$(Build.SourceBranchName)"
+                  Write-Host "Branch Name: $branchName"
+                  if ($branchName -eq 'dev') {
                     $DeployToWorkspaceName = '$(devWorkspaceName)'
-                  } elseif ($env:branchName -eq 'test') {
+                  } elseif ($branchName -eq 'test') {
                     $DeployToWorkspaceName = '$(tstWorkspaceName)'
-                  } elseif ($env:branchName -eq 'prod') {
+                  } elseif ($branchName -eq 'prod') {
                     $DeployToWorkspaceName = '$(prdWorkspaceName)'
                   } else {
                     $DeployToWorkspaceName = 'UnknownBranch'
