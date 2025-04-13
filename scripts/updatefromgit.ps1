@@ -4,16 +4,7 @@
 # https://learn.microsoft.com/en-us/rest/api/fabric/core/git/update-from-git
 # https://learn.microsoft.com/en-us/rest/api/fabric/core/git/get-status
 
-# Instructions:
-# 1. Install PowerShell (https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell)
-# 2. Install Azure PowerShell Az module (https://learn.microsoft.com/en-us/powershell/azure/install-azure-powershell)
-# 3. Run PowerShell as an administrator
-# 4. Fill in the parameters below
-# 5. Change PowerShell directory to where this script is saved
-# 6. > ./GitIntegration-UpdateFromGit.ps1
-# 7. [Optional] Wait for long running operation to be completed - see LongRunningOperation-Polling.ps1
-
-# Parameters - fill these in before running the script!
+# The source for this script can be found at https://learn.microsoft.com/en-us/fabric/cicd/git-integration/git-automation?tabs=user%2CADO#examples
 # =====================================================
 
 param(
