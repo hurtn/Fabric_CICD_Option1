@@ -49,13 +49,10 @@ stages:
                   } else {
                     $DeployToWorkspaceName = 'UnknownBranch'
                   }
-
                   # Install Az module
                   Install-Module -Name Az -Force -Scope CurrentUser
-
                   # Import Az module
                   Import-Module Az
-
                   # Run your script
                   .\scripts\updatefromgit.ps1 -workspaceName $(devWorkspaceName) -pFabricToken $(fabrictoken)
 
