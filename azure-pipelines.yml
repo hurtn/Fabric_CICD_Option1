@@ -40,15 +40,6 @@ stages:
                 targetType: 'inline'
                 script: |
 
-                  if ($env:branchName -eq 'dev') {
-                    $DeployToWorkspaceName = '$(devWorkspaceName)'
-                  } elseif ($env:branchName -eq 'test') {
-                    $DeployToWorkspaceName = '$(tstWorkspaceName)'
-                  } elseif ($env:branchName -eq 'prod') {
-                    $DeployToWorkspaceName = '$(prdWorkspaceName)'
-                  } else {
-                    $DeployToWorkspaceName = 'UnknownBranch'
-                  }
                   # Install Az module
                   Install-Module -Name Az -Force -Scope CurrentUser
                   # Import Az module
