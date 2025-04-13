@@ -55,4 +55,4 @@ stages:
                   # Import Az module
                   Import-Module Az
                   # Run your script
-                  .\scripts\updatefromgit.ps1 -workspaceName $(DeployToWorkspaceName) -pFabricToken $(fabrictoken)
+                  .\scripts\updatefromgit.ps1 -workspaceName $DeployToWorkspaceName -pFabricToken $(fabrictoken)
