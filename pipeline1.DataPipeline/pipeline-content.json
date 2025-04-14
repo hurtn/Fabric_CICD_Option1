@@ -2,86 +2,180 @@
   "properties": {
     "activities": [
       {
-        "name": "Wait1",
-        "type": "Wait",
-        "dependsOn": [],
+        "type": "Copy",
         "typeProperties": {
-          "waitTimeInSeconds": 100
-        }
-      },
-      {
-        "name": "Invoke pipeline1",
-        "type": "InvokePipeline",
-        "dependsOn": [
-          {
-            "activity": "Wait1",
-            "dependencyConditions": [
-              "Succeeded"
-            ]
-          }
-        ],
+          "source": {
+            "type": "ParquetSource",
+            "storeSettings": {
+              "type": "AzureBlobStorageReadSettings",
+              "recursive": false,
+              "wildcardFileName": "*.parquet"
+            },
+            "formatSettings": {
+              "type": "ParquetReadSettings"
+            },
+            "datasetSettings": {
+              "type": "Parquet",
+              "typeProperties": {
+                "location": {
+                  "type": "AzureBlobStorageLocation",
+                  "container": "mlsamples",
+                  "folderPath": "diabetes"
+                },
+                "compressionCodec": "snappy"
+              },
+              "schema": [],
+              "linkedService": {
+                "name": "lakehouse1",
+                "properties": {
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "artifactId": "f965cc85-dc9e-a42f-4a9d-38b968333dae",
+                    "workspaceId": "00000000-0000-0000-0000-000000000000",
+                    "rootFolder": "Tables"
+                  },
+                  "annotations": []
+                }
+              },
+              "annotations": []
+            }
+          },
+          "sink": {
+            "type": "LakehouseTableSink",
+            "tableActionOption": "Append",
+            "datasetSettings": {
+              "type": "LakehouseTable",
+              "typeProperties": {
+                "table": "health_data"
+              },
+              "schema": [],
+              "linkedService": {
+                "name": "lakehouse1",
+                "properties": {
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "artifactId": "f965cc85-dc9e-a42f-4a9d-38b968333dae",
+                    "workspaceId": "00000000-0000-0000-0000-000000000000",
+                    "rootFolder": "Tables"
+                  },
+                  "annotations": []
+                }
+              },
+              "annotations": []
+            }
+          },
+          "translator": {
+            "type": "TabularTranslator",
+            "typeConversion": true,
+            "typeConversionSettings": {
+              "allowDataTruncation": true,
+              "treatBooleanAsNumber": false
+            }
+          },
+          "enableStaging": false
+        },
         "policy": {
           "timeout": "0.12:00:00",
           "retry": 0,
           "retryIntervalInSeconds": 30,
-          "secureOutput": false,
-          "secureInput": false
+          "secureInput": false,
+          "secureOutput": false
         },
-        "typeProperties": {
-          "waitOnCompletion": true,
-          "operationType": "InvokeFabricPipeline",
-          "pipelineId": {
-            "value": "@pipeline().parameters.pipeline_id",
-            "type": "Expression"
-          },
-          "workspaceId": {
-            "value": "@pipeline().parameters.workspace_id",
-            "type": "Expression"
-          },
-          "parameters": {}
-        },
-        "externalReferences": {
-          "connection": "8d656605-6748-4c03-a99b-329d44553a81"
-        }
+        "name": "Copy data1",
+        "dependsOn": []
       },
       {
-        "name": "Wait2",
-        "type": "Wait",
+        "type": "Copy",
+        "typeProperties": {
+          "source": {
+            "type": "RestSource",
+            "requestMethod": "GET",
+            "paginationRules": {
+              "supportRFC5988": "true"
+            },
+            "httpRequestTimeout": "00:01:40",
+            "requestInterval": "00.00:00:00.010",
+            "datasetSettings": {
+              "type": "RestResource",
+              "schema": [],
+              "externalReferences": {
+                "connection": "05f3828a-4517-491f-a9b4-d43746ab62a6"
+              },
+              "annotations": []
+            }
+          },
+          "sink": {
+            "type": "LakehouseTableSink",
+            "tableActionOption": "Append",
+            "partitionOption": "None",
+            "datasetSettings": {
+              "type": "LakehouseTable",
+              "typeProperties": {
+                "table": "api_data"
+              },
+              "schema": [],
+              "linkedService": {
+                "name": "lakehouse1",
+                "properties": {
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "artifactId": "f965cc85-dc9e-a42f-4a9d-38b968333dae",
+                    "workspaceId": "00000000-0000-0000-0000-000000000000",
+                    "rootFolder": "Tables"
+                  },
+                  "annotations": []
+                }
+              },
+              "annotations": []
+            }
+          },
+          "translator": {
+            "type": "TabularTranslator",
+            "typeConversion": true,
+            "typeConversionSettings": {
+              "allowDataTruncation": true,
+              "treatBooleanAsNumber": false
+            },
+            "columnFlattenSettings": {
+              "treatArrayAsString": false,
+              "treatStructAsString": false,
+              "flattenColumnDelimiter": "."
+            }
+          },
+          "enableStaging": false
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Copy data2",
         "dependsOn": [
           {
-            "activity": "Invoke pipeline1",
+            "activity": "Copy data1",
             "dependencyConditions": [
               "Succeeded"
             ]
           }
-        ],
-        "typeProperties": {
-          "waitTimeInSeconds": 1
-        }
+        ]
       },
       {
-        "name": "Wait3",
         "type": "Wait",
+        "typeProperties": {
+          "waitTimeInSeconds": 1
+        },
+        "name": "Wait1",
         "dependsOn": [
           {
-            "activity": "Wait2",
+            "activity": "Copy data2",
             "dependencyConditions": [
               "Succeeded"
             ]
           }
-        ],
-        "typeProperties": {
-          "waitTimeInSeconds": 1
-        }
+        ]
       }
-    ],
-    "parameters": {
-      "workspace_id": {
-        "type": "string"
-      },
-      "pipeline_id": {
-        "type": "string"
-      }
-    }
+    ]
   }
 }
