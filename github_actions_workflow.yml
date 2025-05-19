@@ -1,0 +1,53 @@
+
+name: Update From Git
+
+on:
+  push:
+    branches:
+      - dev
+      - test
+      - prod
+
+jobs:
+  update-from-git:
+    name: Run Update
+    runs-on: windows-latest
+
+    env:
+      FABRIC_TOKEN: ${{ secrets.FABRIC_TOKEN }}
+      DEV_WORKSPACE_NAME: ${{ secrets.DEV_WORKSPACE_NAME }}
+      TST_WORKSPACE_NAME: ${{ secrets.TST_WORKSPACE_NAME }}
+      PRD_WORKSPACE_NAME: ${{ secrets.PRD_WORKSPACE_NAME }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set workspace name based on branch
+        id: set_workspace
+        shell: pwsh
+        run: |
+          $branchName = "${{ github.ref }}".Split('/')[-1]
+          Write-Host "Branch Name: $branchName"
+
+          switch ($branchName) {
+            'dev' { $workspace = "${{ env.DEV_WORKSPACE_NAME }}" }
+            'test' { $workspace = "${{ env.TST_WORKSPACE_NAME }}" }
+            'prod' { $workspace = "${{ env.PRD_WORKSPACE_NAME }}" }
+            default { $workspace = "UnknownBranch" }
+          }
+
+          echo "workspaceName=$workspace" >> $env:GITHUB_OUTPUT
+
+      - name: Install Az PowerShell module
+        shell: pwsh
+        run: |
+          Install-Module -Name Az -Force -Scope CurrentUser
+          Import-Module Az
+
+      - name: Run update script
+        shell: pwsh
+        run: |
+          $workspaceName = "${{ steps.set_workspace.outputs.workspaceName }}"
+          Write-Host "Running update script with workspaceName=$workspaceName"
+          .\scripts\updatefromgit.ps1 -workspaceName $workspaceName -pFabricToken ${{ env.FABRIC_TOKEN }}
